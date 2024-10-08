@@ -18,7 +18,8 @@ class LandingPage extends StatelessWidget {
         BlocProvider(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => FirestoreBloc(FirestoreService())),
       ],
-      child: LandingView(),
+      child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(), child: LandingView()),
     );
   }
 }
@@ -104,8 +105,28 @@ class _LandingViewState extends State<LandingView> {
             SizedBox(
               height: 75,
             ),
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is AuthLoginSuccess) {
+                  final snack = SnackBar(
+                    content: Text(state.Message),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snack);
+                  emailController.text = '';
+                  passwordController.text = '';
+                  context.go('/home');
+                } else if (state is AuthFailedState) {
+                  final snack = SnackBar(
+                    content: Text(state.errorMessage),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snack);
+                }
+              },
+              child: SizedBox(),
+            ),
             TextButton(
               onPressed: () {
+                FocusScope.of(context).unfocus();
                 if (emailController.text.isNotEmpty &&
                     passwordController.text.isNotEmpty) {
                   BlocProvider.of<AuthBloc>(context).add(
@@ -114,19 +135,18 @@ class _LandingViewState extends State<LandingView> {
                       passwordController.text.trim(),
                     ),
                   );
-                  FirebaseAuth.instance.authStateChanges().listen((User? user) {
-                    print(user);
-                    if (user == null) {
-                      const snackBar = SnackBar(
-                        content: Text('Username/Password Incorrect'),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    } else {
-                      context.go('/home');
-                      emailController.text = '';
-                      passwordController.text = '';
-                    }
-                  });
+                  // FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                  //   if (user == null) {
+                  //     const snackBar = SnackBar(
+                  //       content: Text('Username/Password Incorrect'),
+                  //     );
+                  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  //   } else {
+                  //     context.go('/home');
+                  //     emailController.text = '';
+                  //     passwordController.text = '';
+                  //   }
+                  // });
                 } else {
                   const snackBar = SnackBar(
                     content: Text('Please enter email and password'),

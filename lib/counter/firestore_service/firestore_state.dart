@@ -20,7 +20,9 @@ class FirestoreUserLoaded extends FirestoreState {
 
 class FirestoreUserReceiptsLoaded extends FirestoreState {
   final List<ReceiptModel> userReceipts;
-  FirestoreUserReceiptsLoaded(this.userReceipts);
+  final UserModel? user;
+
+  FirestoreUserReceiptsLoaded(this.userReceipts, this.user);
 }
 
 class FirestoreUserReceiptsUpdatedLoaded extends FirestoreState {

@@ -28,7 +28,8 @@ class FirestoreBloc extends Bloc<FirestoreEvent, FirestoreState> {
           emit(FirestoreLoading());
           final userReceipts =
               await firestoreService.getUserReceipts(event.email);
-          emit(FirestoreUserReceiptsLoaded(userReceipts.toList()));
+          final user = await firestoreService.getUser(event.email);
+          emit(FirestoreUserReceiptsLoaded(userReceipts.toList(), user));
         } catch (e) {
           print(e);
           emit(FirestoreError('Failed to load user Receipts'));
