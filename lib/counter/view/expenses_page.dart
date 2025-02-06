@@ -367,11 +367,12 @@ class _ExpensesViewState extends State<ExpensesView> {
                                                                   bottom: 10),
                                                           child: Text(
                                                             '₱ ' +
-                                                                state
-                                                                    .userReceipts[
-                                                                        index]
-                                                                    .total
-                                                                    .toString(),
+                                                                NumberFormat(
+                                                                        "#,##0.00")
+                                                                    .format(state
+                                                                        .userReceipts[
+                                                                            index]
+                                                                        .total),
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: TextStyle(

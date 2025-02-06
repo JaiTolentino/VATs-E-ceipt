@@ -84,7 +84,7 @@ class FirestoreService {
       receiptsData
           .doc(receipt.referenceNumber.toString())
           .collection('products')
-          .doc(element.productCode.toString())
+          .doc()
           .set({
         'code': element.productCode,
         'name': element.name,

@@ -113,11 +113,15 @@ class _HomeViewState extends State<HomeView> {
                               if (state is FirestoreUserReceiptsLoaded) {
                                 double totalExpenditure = 0.0;
                                 for (final data in state.userReceipts) {
-                                  totalExpenditure =
-                                      data.total + totalExpenditure;
+                                  DateTime dateTime =
+                                      DateTime.parse(data.dateTimeCreated);
+                                  if (dateTime.month == DateTime.now().month) {
+                                    (totalExpenditure) =
+                                        data.total + totalExpenditure;
+                                  }
                                 }
                                 return Text(
-                                  '₱ ${totalExpenditure.toStringAsFixed(2)}',
+                                  '₱ ${NumberFormat("#,##0.00").format(totalExpenditure)}',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -230,7 +234,7 @@ class _HomeViewState extends State<HomeView> {
                                   Column(
                                     children: [
                                       Text(
-                                        "₱ ${state.userReceipts[index].total}",
+                                        "₱ ${NumberFormat("#,##0.00").format(state.userReceipts[index].total)}",
                                         style: TextStyle(
                                           color: Color.fromRGBO(50, 50, 50, 1),
                                           fontSize: 20,
