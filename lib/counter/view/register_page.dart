@@ -165,6 +165,9 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                       ),
                     );
+                    context.go('/');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Registered Successfully')));
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

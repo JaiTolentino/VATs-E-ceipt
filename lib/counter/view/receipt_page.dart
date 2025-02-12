@@ -352,7 +352,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                     ),
                                   ),
                                   Text(
-                                    '${NumberFormat("#,##0.00").format(state.receipt!.amount)} PHP',
+                                    '${NumberFormat("#,##0.00").format(subTotal + state.receipt!.serviceCharge)} PHP',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -397,7 +397,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                     ),
                                   ),
                                   Text(
-                                    '${NumberFormat("#,##0.00").format(state.receipt!.total)} PHP',
+                                    '${NumberFormat("#,##0.00").format(subTotal + state.receipt!.serviceCharge + state.receipt!.vat)} PHP',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
@@ -435,7 +435,7 @@ class _ReceiptViewState extends State<ReceiptView> {
                                     ),
                                   ),
                                   Text(
-                                    '${NumberFormat("#,##0.00").format(state.receipt!.change)} PHP',
+                                    '${NumberFormat("#,##0.00").format(state.receipt!.cash - (subTotal + state.receipt!.serviceCharge + state.receipt!.vat))} PHP',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500,
