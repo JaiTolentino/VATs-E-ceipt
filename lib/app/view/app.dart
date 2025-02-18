@@ -8,6 +8,7 @@ import 'package:posclient/counter/view/qrcode_page.dart';
 import 'package:posclient/counter/view/receiptDetails_page.dart';
 import 'package:posclient/counter/view/receipt_page.dart';
 import 'package:posclient/counter/view/register_page.dart';
+import 'package:posclient/counter/view/resetpassword_page.dart';
 import 'package:posclient/l10n/l10n.dart';
 
 final GoRouter _router = GoRouter(
@@ -46,6 +47,12 @@ final GoRouter _router = GoRouter(
           path: 'account',
           builder: (BuildContext context, GoRouterState state) {
             return AccountPage();
+          },
+        ),
+        GoRoute(
+          path: 'resetpassword',
+          builder: (BuildContext context, GoRouterState state) {
+            return ResetPasswordPage();
           },
         ),
         GoRoute(

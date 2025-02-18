@@ -89,17 +89,22 @@ class _LandingViewState extends State<LandingView> {
                 );
               },
             ),
-            // SizedBox(
-            //   height: 16,
-            // ),
+            SizedBox(
+              height: 16,
+            ),
             // Row(mainAxisAlignment: MainAxisAlignment.end, children: [
             //   GestureDetector(
             //     onTap: () {
-            //       const snackBar = SnackBar(content: Text('Forgot Password'));
-
-            //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            //       context.go('/resetpassword');
             //     },
-            //     child: Text('Forgot Password?'),
+            //     child: Text(
+            //       'Forgot Password?',
+            //       style: TextStyle(
+            //         color: Color.fromRGBO(57, 181, 74, 1),
+            //         decoration: TextDecoration.underline,
+            //         decorationColor: Color.fromRGBO(57, 181, 74, 1),
+            //       ),
+            //     ),
             //   ),
             // ]),
             SizedBox(

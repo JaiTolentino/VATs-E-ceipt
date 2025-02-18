@@ -115,7 +115,7 @@ class _HomeViewState extends State<HomeView> {
                                 for (final data in state.userReceipts) {
                                   DateTime dateTime =
                                       DateTime.parse(data.dateTimeCreated);
-                                  if (dateTime.month == DateTime.now().month) {
+                                  if (dateTime.month == DateTime.now().day) {
                                     (totalExpenditure) =
                                         data.total + totalExpenditure;
                                   }

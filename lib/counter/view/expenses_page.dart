@@ -105,6 +105,7 @@ class _ExpensesViewState extends State<ExpensesView> {
                           List<DropdownMenuItem<String>> dropdownData = [];
 
                           if (state is FirestoreUserReceiptsLoaded) {
+                            print('length: ${state.userReceipts.length}');
                             for (var i = 0;
                                 i < state.userReceipts.length;
                                 i++) {
@@ -142,41 +143,48 @@ class _ExpensesViewState extends State<ExpensesView> {
                             );
                           } else if (state
                               is FirestoreUserReceiptsUpdatedLoaded) {
-                            for (var i = 0;
-                                i < state.userReceipts.length;
-                                i++) {
-                              String category =
-                                  state.userReceipts[i].receiptCategory;
-                              if (category == '') {
-                                category = 'No Tag';
+                            if (state.userReceipts.isNotEmpty) {
+                              for (var i = 0;
+                                  i < state.userReceipts.length;
+                                  i++) {
+                                String category =
+                                    state.userReceipts[i].receiptCategory;
+                                if (category == '') {
+                                  category = 'No Tag';
+                                }
+                                if (uniqueCategories.add(category)) {
+                                  dropdownData.add(
+                                    DropdownMenuItem(
+                                      child: Text(category),
+                                      value:
+                                          state.userReceipts[i].receiptCategory,
+                                    ),
+                                  );
+                                }
                               }
-                              if (uniqueCategories.add(category)) {
-                                dropdownData.add(
-                                  DropdownMenuItem(
-                                    child: Text(category),
-                                    value:
-                                        state.userReceipts[i].receiptCategory,
-                                  ),
-                                );
-                              }
+                              return DropdownButton(
+                                value: context.select((ExpensesCubit cubit) =>
+                                            cubit.state) ==
+                                        ''
+                                    ? dropdownData[0].value
+                                    : context.select(
+                                        (ExpensesCubit cubit) => cubit.state),
+                                items: dropdownData,
+                                onChanged: (value) {
+                                  BlocProvider.of<FirestoreBloc>(context).add(
+                                      GetUserReceiptsUpdateTag(user!.email!,
+                                          value!.toString().trim()));
+                                  context
+                                      .read<ExpensesCubit>()
+                                      .changeState(value.toString());
+                                },
+                              );
+                            } else {
+                              return Text(
+                                'No Tags',
+                                style: TextStyle(color: Colors.black),
+                              );
                             }
-                            return DropdownButton(
-                              value: context.select((ExpensesCubit cubit) =>
-                                          cubit.state) ==
-                                      ''
-                                  ? dropdownData[0].value
-                                  : context.select(
-                                      (ExpensesCubit cubit) => cubit.state),
-                              items: dropdownData,
-                              onChanged: (value) {
-                                BlocProvider.of<FirestoreBloc>(context).add(
-                                    GetUserReceiptsUpdateTag(user!.email!,
-                                        value!.toString().trim()));
-                                context
-                                    .read<ExpensesCubit>()
-                                    .changeState(value.toString());
-                              },
-                            );
                           } else {
                             return Text(
                               'Loading',
@@ -192,6 +200,7 @@ class _ExpensesViewState extends State<ExpensesView> {
               BlocBuilder<FirestoreBloc, FirestoreState>(
                 builder: (context, state) {
                   if (state is FirestoreUserReceiptsLoaded) {
+                    print('length: ${state.userReceipts.length}');
                     if (state.userReceipts.length > 0) {
                       return Expanded(
                         child: ListView.builder(
@@ -413,8 +422,9 @@ class _ExpensesViewState extends State<ExpensesView> {
                       );
                     }
                   } else if (state is FirestoreUserReceiptsUpdatedLoaded) {
-                    print(state.userReceipts.length);
-                    if (state.userReceipts.isNotEmpty) {
+                    print('lengths: ${state.userReceipts.length}');
+                    if (state.userReceipts.length > 0) {
+                      print('im here');
                       return Expanded(
                         child: ListView.builder(
                           itemCount: state.userReceipts.length,
@@ -619,9 +629,10 @@ class _ExpensesViewState extends State<ExpensesView> {
                         ),
                       );
                     } else {
+                      print('not here');
                       return Center(
                         child: Text(
-                          'No expenses yet',
+                          'No expenses Found',
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w700,
