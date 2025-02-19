@@ -8,6 +8,7 @@ class ReceiptModel {
     this.serviceCharge,
     this.amount,
     this.vat,
+    this.vatableSales,
     this.total,
     this.cash,
     this.change,
@@ -24,6 +25,7 @@ class ReceiptModel {
   double serviceCharge;
   double amount;
   double vat;
+  double vatableSales;
   double total;
   double cash;
   double change;
