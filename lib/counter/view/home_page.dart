@@ -102,7 +102,7 @@ class _HomeViewState extends State<HomeView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "TODAY'S EXPENDITURE",
+                            "MONTHLY EXPENDITURE",
                             style: TextStyle(
                               color: Color.fromRGBO(31, 29, 43, 1),
                               fontSize: 10,
@@ -115,7 +115,7 @@ class _HomeViewState extends State<HomeView> {
                                 for (final data in state.userReceipts) {
                                   DateTime dateTime =
                                       DateTime.parse(data.dateTimeCreated);
-                                  if (dateTime.month == DateTime.now().day) {
+                                  if (dateTime.month == DateTime.now().month) {
                                     (totalExpenditure) =
                                         data.total + totalExpenditure;
                                   }
