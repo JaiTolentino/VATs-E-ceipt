@@ -79,9 +79,11 @@ class _ExpensesViewState extends State<ExpensesView> {
                       suffixIcon: IconButton(
                         icon: Icon(Icons.search),
                         onPressed: () {
-                          BlocProvider.of<FirestoreBloc>(context).add(
-                              GetUserReceiptsUpdate(
-                                  user!.email!, searchController.text));
+                          if (searchController.text.isNotEmpty) {
+                            BlocProvider.of<FirestoreBloc>(context).add(
+                                GetUserReceiptsUpdate(
+                                    user!.email!, searchController.text));
+                          }
                         },
                       ),
                       fillColor: Colors.black,
@@ -106,41 +108,45 @@ class _ExpensesViewState extends State<ExpensesView> {
 
                           if (state is FirestoreUserReceiptsLoaded) {
                             print('length: ${state.userReceipts.length}');
-                            for (var i = 0;
-                                i < state.userReceipts.length;
-                                i++) {
-                              String category =
-                                  state.userReceipts[i].receiptCategory;
-                              if (category == '') {
-                                category = 'No Tag';
+                            if (state.userReceipts.length > 0) {
+                              for (var i = 0;
+                                  i < state.userReceipts.length;
+                                  i++) {
+                                String category =
+                                    state.userReceipts[i].receiptCategory;
+                                if (category == '') {
+                                  category = 'No Tag';
+                                }
+                                if (uniqueCategories.add(category)) {
+                                  dropdownData.add(
+                                    DropdownMenuItem(
+                                      child: Text(category),
+                                      value:
+                                          state.userReceipts[i].receiptCategory,
+                                    ),
+                                  );
+                                }
                               }
-                              if (uniqueCategories.add(category)) {
-                                dropdownData.add(
-                                  DropdownMenuItem(
-                                    child: Text(category),
-                                    value:
-                                        state.userReceipts[i].receiptCategory,
-                                  ),
-                                );
-                              }
+                              return DropdownButton(
+                                value: context.select((ExpensesCubit cubit) =>
+                                            cubit.state) ==
+                                        ''
+                                    ? dropdownData[0].value
+                                    : context.select(
+                                        (ExpensesCubit cubit) => cubit.state),
+                                items: dropdownData,
+                                onChanged: (value) {
+                                  BlocProvider.of<FirestoreBloc>(context).add(
+                                      GetUserReceiptsUpdateTag(user!.email!,
+                                          value!.toString().trim()));
+                                  context
+                                      .read<ExpensesCubit>()
+                                      .changeState(value.toString());
+                                },
+                              );
+                            } else {
+                              return Container();
                             }
-                            return DropdownButton(
-                              value: context.select((ExpensesCubit cubit) =>
-                                          cubit.state) ==
-                                      ''
-                                  ? dropdownData[0].value
-                                  : context.select(
-                                      (ExpensesCubit cubit) => cubit.state),
-                              items: dropdownData,
-                              onChanged: (value) {
-                                BlocProvider.of<FirestoreBloc>(context).add(
-                                    GetUserReceiptsUpdateTag(user!.email!,
-                                        value!.toString().trim()));
-                                context
-                                    .read<ExpensesCubit>()
-                                    .changeState(value.toString());
-                              },
-                            );
                           } else if (state
                               is FirestoreUserReceiptsUpdatedLoaded) {
                             if (state.userReceipts.isNotEmpty) {
