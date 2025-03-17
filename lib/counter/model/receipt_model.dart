@@ -10,6 +10,7 @@ class ReceiptModel {
     this.vat,
     this.vatableSales,
     this.total,
+    this.discount,
     this.cash,
     this.change,
     this.POSoperator,
@@ -27,6 +28,7 @@ class ReceiptModel {
   double vat;
   double vatableSales;
   double total;
+  double discount;
   double cash;
   double change;
   String POSoperator;
